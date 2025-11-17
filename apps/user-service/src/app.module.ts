@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TestController } from './test-typescript';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { AppController } from './app.controller';
 
 @Module({
-  imports: [UsersModule, AuthModule],
-  controllers: [TestController],
+  imports: [AuthModule, UsersModule],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
