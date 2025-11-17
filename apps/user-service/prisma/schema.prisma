@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  email           String?
+  emailVerifiedAt DateTime?
+  name            String?
+  password        String
+  createdAt       DateTime  @default(now())
+
+  userRoles    UserRole[]
+  userOAuths   UserOAuth[]
+  activeTokens ActiveToken[]
+}
+
+model UserOAuth {
+  id         String   @id @default(uuid())
+  userId     String
+  provider   String
+  providerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@index([userId])
+}
+
+model ActiveToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String
+  type      TokenType
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+}
+
+model RevokedToken {
+  id        String    @id @default(cuid())
+  tokenHash String
+  type      TokenType
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([expiresAt])
+}
+
+model Role {
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String
+  createdAt       DateTime         @default(now())
+  rolePermissions RolePermission[]
+  userRoles       UserRole[]
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+  attributeRules  AttributeRule[]
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model UserRole {
+  id     String @id @default(cuid())
+  userId String
+  roleId Int
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+model AttributeRule {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  condition    Json
+  permissionId String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([name, permissionId])
+  @@index([permissionId, isActive])
+}
+
+enum TokenType {
+  ACCESS
+  REFRESH
+  PASSWORD_RESET
+  EMAIL_VERIFICATION
+}

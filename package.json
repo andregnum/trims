@@ -1,0 +1,19 @@
+{
+  "name": "trims_0",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TRIMS Zero",
+  "scripts": {
+    "dev:user": "cd apps/user-service && npm run dev",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:all": "concurrently \"npm run dev:user\" \"npm run dev:web\"",
+    "docker:up": "cd docker && docker-compose up -d",
+    "docker:down": "cd docker && docker-compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "keywords": [],
+  "author": "andrelax",
+  "license": "ISC"
+}
