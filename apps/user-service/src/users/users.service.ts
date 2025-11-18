@@ -46,7 +46,7 @@ export class UsersService {
             if (error instanceof ConflictException) {
                 throw error;
             }
-
+            console.log(error);
             throw new InternalServerErrorException('Failed to create user');
         }
 

@@ -1,0 +1,40 @@
+andrelax@Andrt:~/projects/learning/trims_0/apps/user-service$ tree -L 2
+.
+├── dist
+│   ├── app
+│   ├── app.controller.d.ts
+│   ├── app.controller.js
+│   ├── app.controller.js.map
+│   ├── app.controller.spec.d.ts
+│   ├── app.controller.spec.js
+│   ├── app.controller.spec.js.map
+│   ├── app.module.d.ts
+│   ├── app.module.js
+│   ├── app.module.js.map
+│   ├── auth
+│   ├── generated
+│   ├── main.d.ts
+│   ├── main.js
+│   ├── main.js.map
+│   ├── src
+│   ├── test-typescript.d.ts
+│   ├── test-typescript.js
+│   ├── test-typescript.js.map
+│   ├── tsconfig.tsbuildinfo
+│   └── users
+├── generated
+│   └── prisma
+├── node_modules
+├── package-lock.json
+├── package.json
+├── prisma
+│   ├── migrations
+│   └── schema.prisma
+├── src
+│   ├── app.controller.spec.ts
+│   ├── app.controller.ts
+│   ├── app.module.ts
+│   ├── auth
+│   ├── main.ts
+│   └── users
+└── tsconfig.json
