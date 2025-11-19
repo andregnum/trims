@@ -8,10 +8,12 @@ import { AppController } from './app.controller';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      envFilePath: '.env',
     }),
-    AuthModule, UsersModule],
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [AppController],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}
