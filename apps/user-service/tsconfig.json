@@ -20,7 +20,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": ["src/*"],
-      "@common/*": ["../libs/common/*"]
+      "@generated/prisma/*": ["./generated/prisma/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@common/*": ["./src/common/*"]
     },
   },
   "include": ["src/**/*", "test/**/*"],

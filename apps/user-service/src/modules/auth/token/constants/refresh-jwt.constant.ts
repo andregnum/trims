@@ -1,0 +1,2 @@
+export const REFRESH_JWT = 'REFRESH_JWT';
+export const DEFAULT_REFRESH_EXPIRES = 15 * 60 * 1000;

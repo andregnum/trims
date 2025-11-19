@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -15,16 +9,15 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String?   @unique
-  emailVerifiedAt DateTime?
-  name            String?
-  password        String
-  createdAt       DateTime  @default(now())
-
-  userRoles    UserRole[]
-  userOAuths   UserOAuth[]
-  activeTokens ActiveToken[]
+  id               String            @id @default(uuid())
+  email            String?           @unique
+  emailVerifiedAt  DateTime?
+  name             String?
+  password         String
+  createdAt        DateTime          @default(now())
+  userActiveTokens UserActiveToken[]
+  userOAuths       UserOAuth[]
+  userRoles        UserRole[]
 }
 
 model UserOAuth {
@@ -34,14 +27,13 @@ model UserOAuth {
   providerId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])
   @@index([userId])
 }
 
-model ActiveToken {
+model UserActiveToken {
   id        String    @id @default(cuid())
   userId    String
   tokenHash String
@@ -50,10 +42,12 @@ model ActiveToken {
   ipAddress String?
   expiresAt DateTime
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  @@unique([tokenHash, type])
+  @@index([userId])
   @@index([expiresAt])
+  @@index([userId, type])
 }
 
 model RevokedToken {
@@ -76,20 +70,19 @@ model Role {
 }
 
 model Permission {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-
-  rolePermissions RolePermission[]
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  createdAt       DateTime         @default(now())
   attributeRules  AttributeRule[]
+  rolePermissions RolePermission[]
 }
 
 model RolePermission {
   roleId       Int
   permissionId String
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@id([roleId, permissionId])
   @@index([roleId])
@@ -107,16 +100,15 @@ model UserRole {
 }
 
 model AttributeRule {
-  id           String   @id @default(cuid())
+  id           String     @id @default(cuid())
   name         String
   description  String
   condition    Json
   permissionId String
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-
-  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
   @@unique([name, permissionId])
   @@index([permissionId, isActive])
@@ -127,4 +119,5 @@ enum TokenType {
   REFRESH
   PASSWORD_RESET
   EMAIL_VERIFICATION
+  API_KEY
 }

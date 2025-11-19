@@ -2,7 +2,7 @@ import { ConflictException, Injectable, InternalServerErrorException } from '@ne
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import * as bcrypt from 'bcrypt';
-import { PrismaClient } from '../../generated/prisma/client';
+import { PrismaClient } from '../../../generated/prisma/client';
 
 @Injectable()
 export class UsersService {
