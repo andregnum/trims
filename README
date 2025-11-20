@@ -1,0 +1,91 @@
+# Company Management System (Monorepo)
+
+Project ini adalah **Company Management System** berbasis **NestJS + PostgreSQL (Prisma)** dengan arsitektur monorepo.  
+Tujuan utama project ini adalah menyediakan API modular untuk berbagai domain bisnis seperti **Auth, User, Customer, Finance, Billing, CRM, Task, Inventory, dan Network Management**.
+
+---
+
+## 🚀 Features
+
+- **Auth Service** → JWT, refresh token, role-based authorization, multi-tenant  
+- **API Modules** → User, Customer, Employee, Task, CRM, Finance, Billing, Inventory, Network Management  
+- **Database** → PostgreSQL dengan Prisma ORM, multi-tenant via `tenant_id`  
+- **Observability** → Logging, monitoring, audit trail  
+- **Deployment** → Docker + CI/CD pipeline  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: NestJS (TypeScript)  
+- **Database**: PostgreSQL + Prisma  
+- **Cache/Queue**: Redis  
+- **Containerization**: Docker  
+- **Testing**: Jest  
+- **CI/CD**: GitHub Actions / GitLab CI  
+
+---
+
+## 📂 Project Structure
+
+```text
+apps/
+  api/        # Main API project
+  auth/       # Auth microservice
+libs/
+  common/     # Shared utilities, DTOs, configs
+```
+
+---
+
+## ⚙️ Setup & Development
+
+### 1. Clone Repository
+
+```bash
+git clone <repo-url>
+cd company-management-system
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Setup Environment
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/company_db"
+REDIS_URL="redis://localhost:6379"
+JWT_SECRET="your-secret-key"
+```
+
+### 4. Run Database Migration
+
+```bash
+npx prisma migrate dev
+```
+
+### 5. Start Development
+
+```bash
+npm run start:dev
+```
+
+---
+
+## 📖 Documentation
+
+- `README.md` → Deskripsi project & setup  
+- `dev.md` → Aturan development (branch naming, commit convention, database guideline, dll)  
+- `CHANGELOG.md` → Auto-generated changelog via standard-version  
+
+---
+
+## 🧑‍💻 Contributing
+
+1. Buat branch baru dari `main`  
+2. Commit dengan Commitizen  
+3. Push branch & buat Pull Request  
+4. Pastikan code sudah lint + test sebelum merge  
