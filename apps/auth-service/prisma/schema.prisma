@@ -15,11 +15,36 @@ datasource db {
 }
 
 model User {
-  id              String    @id @default(uuid())
-  email           String?   @unique
-  emailVerifiedAt DateTime?
-  name            String?
-  password        String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @default(now())
+  id                    String    @id @default(uuid())
+  email                 String?   @unique
+  emailVerifiedAt       DateTime?
+  password              String
+  phoneNumber           String?
+  phoneNumberVerifiedAt DateTime?
+  isActive              Boolean   @default(true)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now())
+  deletedAt             DateTime? @map("deleted_at")
+
+  userProfile UserProfile?
+
+  @@index([email])
+  @@index([phoneNumber])
+  @@index([isActive])
+}
+
+model UserProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  displayName String?
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@index([userId])
+  @@index([name])
+  @@index([displayName])
 }
