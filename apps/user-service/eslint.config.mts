@@ -8,7 +8,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig(
   {
-    ignores: ['eslint.config.mts'],
+    ignores: ['eslint.config.mts', './dist/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -19,7 +19,7 @@ export default defineConfig(
         ...globals.node,
         ...globals.jest,
       },
-      sourceType: 'commonjs',
+      sourceType: 'ESM',
       parserOptions: {
         projectService: true,
         tsconfigRootDir: new URL('.', import.meta.url).pathname,
