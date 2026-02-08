@@ -1,31 +1,20 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from './config/config.module.js';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { UserModule } from './user/user.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
+import { LoggerModule } from 'nestjs-pino';
+import { pinoConfig } from './config/pino.config.js';
+
+function createLoggerModule(): ReturnType<typeof LoggerModule.forRoot> {
+  return LoggerModule.forRoot(
+    pinoConfig() as Parameters<typeof LoggerModule.forRoot>[0],
+  );
+}
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-      validate: (config) => {
-        const required = ['DATABASE_URL'];
-        const missing = required.filter((key) => !config[key]);
-
-        if (missing.length > 0) {
-          throw new Error(
-            `Missing environment variables: ${missing.join(', ')}`,
-          );
-        }
-
-        return config;
-      },
-    }),
-    PrismaModule,
-    UserModule,
-  ],
+  imports: [ConfigModule, createLoggerModule(), PrismaModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
