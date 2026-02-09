@@ -5,14 +5,14 @@ import { Logger } from 'nestjs-pino';
 export class AuthService {
   constructor(private readonly logger: Logger) {}
 
-  async login(creadentials: {
+  async login(credentials: {
     username: string;
     password: string;
   }): Promise<string> {
-    this.logger.log(`User ${creadentials.username} is attempting to log in.`);
+    this.logger.log(`User ${credentials.username} is attempting to log in.`);
     // Implement login logic here
 
-    this.logger.log(`User ${creadentials.username} logged in successfully.`);
+    this.logger.log(`User ${credentials.username} logged in successfully.`);
     return Promise.resolve('fake-jwt-token');
   }
 

@@ -15,6 +15,7 @@ function createLoggerModule(): ReturnType<typeof LoggerModule.forRoot> {
 
 @Module({
   imports: [ConfigModule, createLoggerModule(), PrismaModule, UserModule],
+  exports: [createLoggerModule()],
   controllers: [AppController],
   providers: [AppService],
 })
