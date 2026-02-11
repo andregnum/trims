@@ -75,16 +75,16 @@ model RefreshToken {
 }
 
 model UserProfile {
-  id          String    @id @default(uuid())
-  userId      String    @unique
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  userId      String   @unique
   name        String
   displayName String?
   photoUrl    String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
-  @@index([userId])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([name])
   @@index([displayName])
 }
@@ -97,14 +97,13 @@ enum PermissionStatus {
 
 model Permission {
   id          Int              @id @default(autoincrement())
-  name        String
+  name        String           @unique
   description String?
   status      PermissionStatus @default(ACTIVE)
   createdAt   DateTime         @default(now())
 
   userPermissions UserPermission[]
 
-  @@unique([name])
   @@index([status])
 }
 
